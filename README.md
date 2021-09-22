@@ -370,14 +370,14 @@ Returns the last element of the list provided in the first argument.
 
 ;; (100 200)
 ```
-Returns a list of the first n elements of the list provided in the first argument.
+Returns a list of the first n elements of the list provided as the second argument.
 
 ```
 (drop 2 (list 100 200 300 400))
 
 ;; (300 400)
 ```
-Returns all but the first n elements of the list provided in the first argument.
+Returns all but the first n elements of the list provided as the second argument.
 
 ```
 (sort (list 300 100 200 500))
@@ -476,9 +476,9 @@ Returns the result of converting the byte provided as the first argument to its 
 
 
 ## Running tests
-There is a test suite included under tests. If any of the tests fail, it will throw an exception.
+There is a test suite included for each module. If any of the tests fail, it will throw an exception.
 
-Please note that this currently takes a while to run all tests. Also note that you will have to pass the result from the stage2 compilation to the VM to fully execute the code.
+Please note it currently takes a while to run all tests. Also note that you will have to pass the result from the stage2 compilation to the VM to fully execute the code.
 
 There is a `Makefile` included to run the tests. You can use the `-j` option to run the tests in parallel:
 
@@ -501,7 +501,7 @@ sys     0m0.795s
 This is loosely based on Peter Norvig and Kent Pitman's [style guide](http://norvig.com/luv-slides.pdf) for Common Lisp.
 
 ### Formatting
-Indentation should be two lines per form.
+Indentation should be two spaces per form.
 
 Lines should not exceed 100 columns.
 

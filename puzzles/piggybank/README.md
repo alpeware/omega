@@ -528,7 +528,8 @@ txch1dyjdr3pjh54q3mymc8j7992qdtmy4aeegpzaejw2q6dz2ukec0wqkryhc4
 And we are ready to create the deposit smart coin with a value of 100 mojos -
 
 ```
-$ make create-deposit ADDRESS=txch1dyjdr3pjh54q3mymc8j7992qdtmy4aeegpzaejw2q6dz2ukec0wqkryhc4  chia wallet send -a 0.000000000100 -t txch1dyjdr3pjh54q3mymc8j7992qdtmy4aeegpzaejw2q6dz2ukec0wqkryhc4 --override
+$ make create-deposit ADDRESS=txch1dyjdr3pjh54q3mymc8j7992qdtmy4aeegpzaejw2q6dz2ukec0wqkryhc4
+chia wallet send -a 0.000000000100 -t txch1dyjdr3pjh54q3mymc8j7992qdtmy4aeegpzaejw2q6dz2ukec0wqkryhc4 --override
 Submitting transaction...                                                                                                                                   Transaction submitted to nodes: [('5a1dc4b48e9da813357e38eb16f06b224acacdb9b4ec1c188cd35380bdc7050f', 1, None)]
 Do chia wallet get_transaction -f 3749913351 -tx 0x62bd412a2d63c08a0ada8f55ab49bd742ecd4216fb12195d41b889b145d88d04 to get status
 ```
@@ -921,7 +922,7 @@ Let's complete our `spend bundle` -
 }
 ```
 
-Let's incept it to make sure we didn't make any mistakes -
+Let's inspect it to make sure we didn't make any mistakes -
 
 ```
 $ make inspect
@@ -1026,8 +1027,10 @@ Looks like everything checked out, so let's go ahead and push our spend bundle -
 
 ```
 $ make push-spend-bundle
-cdv rpc pushtx spend-bundle.json                                                                   {
-  "status": "SUCCESS",                                                                               "success": true
+cdv rpc pushtx spend-bundle.json
+{
+  "status": "SUCCESS",
+  "success": true
 }
 ```
 
