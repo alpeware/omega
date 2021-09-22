@@ -1,0 +1,89 @@
+;;;; Conditions
+
+;;; reference:
+;;; https://github.com/Chia-Network/chia-blockchain/blob/main/chia/types/condition_opcodes.py
+(
+ ;; the conditions below require bls12-381 signatures
+ (defconstant AGG-SIG-UNSAFE 49)
+ (defconstant AGG-SIG-ME 50)
+
+ ;; the conditions below reserve coin amounts and have to be accounted for in output totals
+
+ (defconstant CREATE-COIN 51)
+ (defconstant RESERVE-FEE 52)
+
+ ;; the conditions below deal with announcements, for inter-coin communication
+
+ (defconstant CREATE-COIN-ANNOUNCEMENT 60)
+ (defconstant ASSERT-COIN-ANNOUNCEMENT 61)
+ (defconstant CREATE-PUZZLE-ANNOUNCEMENT 62)
+ (defconstant ASSERT-PUZZLE-ANNOUNCEMENT 63)
+
+ ;; the conditions below let coins inquire about themselves
+
+ (defconstant ASSERT-MY-COIN-ID 70)
+ (defconstant ASSERT-MY-PARENT-ID 71)
+ (defconstant ASSERT-MY-PUZZLEHASH 72)
+ (defconstant ASSERT-MY-AMOUNT 73)
+
+ ;; the conditions below ensure that we're "far enough" in the future
+
+ ;; wall-clock time
+ (defconstant ASSERT-SECONDS-RELATIVE 80)
+ (defconstant ASSERT-SECONDS-ABSOLUTE 81)
+
+ ;; block index
+ (defconstant ASSERT-HEIGHT-RELATIVE 82)
+ (defconstant ASSERT-HEIGHT-ABSOLUTE 83)
+
+ ;; condition factories
+
+ ;; asserts
+ (defun-inline assert-coin-announcement (message)
+   (list ASSERT-COIN-ANNOUNCEMENT message))
+
+ (defun-inline assert-puzzle-announcement (hash)
+   (list ASSERT-PUZZLE-ANNOUNCEMENT hash))
+
+ (defun-inline assert-amount (amount)
+   (list ASSERT-MY-AMOUNT amount))
+
+ (defun-inline assert-coin-id (id)
+   (list ASSERT-MY-COIN-ID id))
+
+ (defun-inline assert-parent-id (id)
+   (list ASSERT-MY-PARENT-ID id))
+
+ (defun-inline assert-puzzle-hash (puzzle-hash)
+   (list ASSERT-MY-PUZZLEHASH puzzle-hash))
+
+ (defun-inline assert-relative-seconds (secs)
+   (list ASSERT-SECONDS-RELATIVE secs))
+
+ (defun-inline assert-absolute-seconds (secs)
+   (list ASSERT-SECONDS-ABSOLUTE secs))
+
+ (defun-inline assert-relative-height (height)
+   (list ASSERT-HEIGHT-RELATIVE height))
+
+ (defun-inline assert-absolute-height (height)
+   (list ASSERT-HEIGHT-ABSOLUTE height))
+
+ ;; create
+ (defun-inline coin (puzzle-hash amount)
+   (list CREATE-COIN puzzle-hash amount))
+
+ ;; announce
+ (defun-inline announce-coin (amount)
+   (list CREATE-COIN-ANNOUNCEMENT amount))
+
+ (defun-inline announce-puzzle (hash)
+   (list CREATE-PUZZLE-ANNOUNCEMENT hash))
+
+ ;; signature
+ (defun-inline sign (pubkey data)
+   (list AGG-SIG-ME pubkey data))
+
+ (defun-inline sign-unsafe (pubkey data)
+   (list AGG-SIG-UNSAFE pubkey data))
+ )

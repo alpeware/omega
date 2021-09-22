@@ -1,0 +1,15 @@
+;;;; Deposit
+
+;;; Deposit smart coin library.
+(
+ (defun-inline hash (coin-id new-amount)
+   (sha256 coin-id new-amount))
+
+ (defun conditions (pubkey hash)
+   (list
+    (assert-coin-announcement hash)
+    (sign-unsafe pubkey hash)))
+
+ (defun-inline deposit (pubkey coin-id new-amount)
+   (conditions pubkey (hash coin-id new-amount)))
+ )

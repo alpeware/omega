@@ -1,0 +1,23 @@
+{
+    "coin_spends": [
+        {
+            "coin": {
+                "parent_coin_info": "",
+                "puzzle_hash": "",
+                "amount": 0
+            },
+            "puzzle_reveal": "",
+            "solution": ""
+        },
+        {
+            "coin": {
+                "parent_coin_info": "",
+                "puzzle_hash": "",
+                "amount": 100
+            },
+            "puzzle_reveal": "",
+            "solution": ""
+        }
+    ],
+    "aggregated_signature": ""
+}

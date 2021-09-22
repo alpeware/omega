@@ -1,0 +1,6 @@
+(
+ (defmacro throw args
+   (if args
+     (qq (x (q (unquote args))))
+     (list x ())))
+ )

@@ -1,0 +1,129 @@
+;;;; functional
+
+;;; depends on core.clib
+(
+ ;; can't pass lambdas to map and reduce
+ (defun odd? (x) (= (logand x 1) 1))
+ (defun even? (x) (not (odd? x)))
+ (defun constantly (x) 1)
+ ;; reduce fns
+ (defun sum (x y) (+ x y))
+ (defun join (a b) (concat a b))
+
+ ;; compares two lists
+ (defun equal (xs ys)
+   (cond
+     (not (= (first xs) (first ys))) false
+     (and (rest xs) (rest ys)) (equal (rest xs) (rest ys))
+     (and (not (rest xs)) (not (rest ys))) true
+     default false))
+
+ (defun map (func xs)
+   (if xs
+     (cons (func (first xs))
+           (map func (rest xs)))
+     ()))
+
+ (defun filter (pred xs)
+   (cond
+     (not xs) ()
+     (pred (first xs)) (cons (first xs) (filter pred (rest xs)))
+     else (filter pred (rest xs))))
+
+ (defun remove (pred xs)
+   (cond
+     (not xs) ()
+     (pred (first xs)) (remove pred (rest xs))
+     else (cons (first xs) (remove pred (rest xs)))))
+
+ (defun reduce (func init xs)
+   (if xs
+     (func (first xs) (reduce func init (rest xs)))
+     init))
+
+ (defun some (pred xs)
+   (cond
+     (not xs) ()
+     (pred (first xs)) (first xs)
+     else (some pred (rest xs))))
+
+ (defun contains (x xs)
+   (cond
+     (not xs) false
+     (= (first xs) x) true
+     else (contains x (rest xs))))
+
+ (defun count (xs)
+   (reduce sum 0 (map constantly xs)))
+
+ (defun range (start end step)
+   (if (> start (- end 1))
+     ()
+     (cons start (range (+ start step) end step))))
+
+ (defun append (xs ys)
+   (if xs
+     (cons (first xs) (append (rest xs) ys))
+     ys))
+
+ (defun flatten (xs)
+   (cond
+     (not xs) ()
+     (listp (first xs)) (append (flatten (first xs)) (flatten (rest xs)))
+     else (cons (first xs) (flatten (rest xs)))))
+
+ (defun reverse (xs)
+   (if xs
+     (append (reverse (rest xs)) (list (first xs)))
+     ()))
+
+ (defun last (xs)
+   (if xs
+     (first (reverse xs))
+     ()))
+
+ (defun take (n xs)
+   (cond
+     (or (not n) (not xs)) ()
+     else (cons (first xs) (take (dec n) (rest xs)))))
+
+ (defun drop (n xs)
+   (cond
+     (not n) xs
+     else (drop (dec n) (rest xs))))
+
+ ;; merge sort
+ (defun -odd (xs)
+   (cond
+     (not xs) ()
+     (not (rest xs)) (list (first xs))
+     else (cons (first xs) (-odd (rest (rest xs))))))
+
+ (defun -even (xs)
+   (cond
+     (not xs) ()
+     (not (rest xs)) ()
+     else (cons (second xs) (-even (rest (rest xs))))))
+
+ ;; credit https://gist.github.com/miyukino/5652105
+ (defun -slice (xs)
+   (cons (-odd xs) (cons (-even xs) ())))
+
+ (defun -merge (xs ys)
+   (cond
+     (not xs) ys
+     (not ys) xs
+     (< (first xs) (first ys)) (cons (first xs) (-merge (rest xs) ys))
+     else (cons (first ys) (-merge (rest ys) xs))))
+
+ (defun mergesort (xs)
+   (cond
+     (not xs) xs
+     (not (rest xs)) xs
+     else (-merge (mergesort (first (-slice xs)))
+                  (mergesort (second (-slice xs))))))
+
+ (defun sort (xs)
+   (mergesort xs))
+
+ )

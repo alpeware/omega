@@ -1,0 +1,15 @@
+(lambda ()
+  (include "core.clib")
+  (include "crypto.clib")
+
+  (list
+   "crypto tests"
+
+   (test "sha256 tree" (assert
+                        (= (sha256tree "chia") (sha256 1 "chia"))
+                        (= (sha256tree (list 100 200 300))
+                           (sha256 2 (sha256 1 100)
+                                   (sha256 2 (sha256 1 200)
+                                           (sha256 2 (sha256 1 300) (sha256 1 ())))))))
+   )
+  )

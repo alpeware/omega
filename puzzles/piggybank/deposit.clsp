@@ -1,0 +1,15 @@
+;;;; Deposit
+
+;;; A deposit smart coin used with the piggybank smart coin.
+;;;
+;;; Precommitted values:
+;;;
+;;; PUBKEY: public key used to sign messages
+;;; coin-id: the coin id of the piggybank
+;;; new-amount: the new amount of the piggybank after depositing
+(mod (PUBKEY coin-id new-amount)
+
+     (include "omega.clib")
+     (include "deposit.clib")
+
+     (deposit PUBKEY coin-id new-amount))

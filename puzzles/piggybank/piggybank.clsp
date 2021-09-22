@@ -1,0 +1,21 @@
+;;;; Piggybank
+
+;;; A piggybank smart coin.
+;;;
+;;; Precommitted values:
+;;;
+;;; TARGET-AMOUNT: amount in mojos before payout
+;;; CASH-OUT-PUZZLE-HASH: payout address
+;;;
+;;; my-puzzle-hash: hash of the piggybank w/ precommitted values
+;;; my-amount: current amount of the savings in the piggybank
+;;; new-amount: new amount including newly deposited amount
+;;;
+;;; DISCLAIMER: This version of the piggybank also suffers from the
+;;; flash loan of god attack and is just for educational purposes.
+(mod (TARGET-AMOUNT CASH-OUT-PUZZLE-HASH my-puzzle-hash my-amount new-amount)
+
+     (include "omega.clib")
+     (include "piggybank.clib")
+
+     (piggybank TARGET-AMOUNT CASH-OUT-PUZZLE-HASH my-puzzle-hash my-amount new-amount))

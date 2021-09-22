@@ -1,0 +1,63 @@
+;;;; strings
+
+;;; depends on core.clib
+(
+ (defun split* (s sep index end acc)
+   (if index
+     (if (= sep (substr s (- index (strlen sep)) index))
+       (split* s sep (- index (strlen sep)) (- index (strlen sep))
+               (cons (substr s index end) acc))
+       (split* s sep (dec index) end acc))
+     (cons (substr s index end) acc)))
+
+ (defun split** (s index acc)
+   (if index
+     (split** s (dec index) (cons (substr s (dec index) index) acc))
+     acc))
+
+ (defun split (s sep)
+   (if (strlen sep)
+     (split* s sep (strlen s) (strlen s) ())
+     (split** s (strlen s) ())))
+
+ (defun starts-with? (s sub)
+   (= sub (substr s 0 (strlen sub))))
+
+ (defun blank? (s)
+   (= (strlen s) 0))
+
+ (defconstant CHAR-A "a")
+ (defconstant CHAR-Z "z")
+ (defconstant UPPER 32)
+ (defun-inline upper-case** (char)
+   (if (and (>s char (dec CHAR-A))
+            (<s char (inc CHAR-Z)))
+     (- char UPPER)
+     char))
+
+ (defun upper-case* (s index sub acc)
+   (if index
+     (upper-case* s
+                  (dec index)
+                  (substr s (dec index) index)
+                  (concat (upper-case** sub) acc))
+     (concat (upper-case** sub) acc)))
+
+ (defun upper-case (s)
+   (upper-case* s
+                (dec (strlen s))
+                (substr s (dec (strlen s)) (strlen s))
+                ""))
+
+ (defun-inline lower (b) (logand b 0x0f))
+ (defun-inline higher (b) (lsh b -4))
+ (defun-inline ascii (b)
+   (if (> (+ b "0") "9")
+     (+ b "0" 0x27) ;; lower case
+     (+ b "0")))
+
+ ;; converts a byte to its hex string representation
+ (defun hex (b)
+   (concat (ascii (higher b)) (ascii (lower b))))
+
+ )

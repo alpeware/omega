@@ -1,0 +1,92 @@
+(lambda ()
+        (include "core.clib")
+        (include "functional.clib")
+
+        (defun plus-one (x) (inc x))
+
+        (list
+         "functional tests"
+
+         (test "equal fn"
+               (assert (equal (list 100 200 300) (list 100 200 300))
+                       (not (equal (list 100) (list 100 200 300)))
+                       (not (equal (list 100 200 300) (list 100)))))
+
+         (test "map fn"
+               (assert (equal (map plus-one (list 100 200 300))
+                              (list 101 201 301))))
+
+         (test "filter fn"
+               (assert (equal
+                        (filter odd? (list 100 101 102 103))
+                        (list 101 103))))
+
+         (test "remove fn"
+               (assert (equal
+                        (remove odd? (list 100 101 102 103))
+                        (list 100 102))))
+
+         (test "reduce fn"
+               (assert (= (reduce sum 0 (list 1 2 3 4 5))
+                          15)))
+
+         (test "some fn"
+               (assert (= (some odd? (list 100 101 102 103))
+                          101)))
+
+         (test "contains fn"
+               (assert (contains 103 (list 100 101 102 103))))
+
+         (test "count fn"
+               (assert (= (count (list 100 200 300))
+                          3)
+                       (not (count ()))))
+
+         (test "range fn"
+               (assert (equal (range 0 10 1)
+                              (list 0 1 2 3 4 5 6 7 8 9))
+                       (equal (range 0 10 2)
+                              (list 0 2 4 6 8))))
+
+         (test "append fn"
+               (assert (equal (append (list 100 200) (list 300 400))
+                              (list 100 200 300 400))
+                       (equal (append () (list 300 400))
+                              (list 300 400))
+                       (equal (append (list 300 400) ())
+                              (list 300 400))))
+
+         (test "flatten fn"
+               (assert (equal (flatten (list 100 (list 200 300) 400))
+                              (list 100 200 300 400))))
+
+         (test "reverse fn"
+               (assert (equal (reverse (list 100 200 300 400))
+                              (list 400 300 200 100))
+                       (not (reverse ()))))
+
+         (test "last fn"
+               (assert (= (last (list 100 200 300 400))
+                          400)
+                       (not (last ()))))
+
+         (test "take fn"
+               (assert (equal (take 3 (list 100 200 300 400 500))
+                              (list 100 200 300))
+                       ;;(not (take 10 (list 100 200)))
+                       ))
+
+         (test "drop fn"
+               (assert (equal (drop 3 (list 100 200 300 400 500))
+                              (list 400 500))
+                       ;;(not (drop 10 (list 100 200)))
+                       ))
+
+         (test "sort fn"
+               (assert (equal (sort (list 500 300 200 400 100))
+                              (list 100 200 300 400 500))
+                       (equal (sort (list "a" "c" "f" "e" "b" "d"))
+                              (list "a" "b" "c" "d" "e" "f"))))
+
+         )
+        )

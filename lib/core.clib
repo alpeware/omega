@@ -1,0 +1,63 @@
+;;;; Omega Library
+
+;;; Omega core library functions.
+(
+ ;; constants
+ (defconstant true 1)
+ (defconstant false 0)
+
+ ;; core ops
+ (defun-inline < (a b) (and (not (= a b)) (not (> a b))))
+ (defun-inline <s (a b) (and (not (= a b)) (not (>s a b))))
+ (defun-inline apply (func args) (a func args))
+ (defun-inline cons (x xs) (c x xs))
+ (defun-inline dec (a) (- a 1))
+ (defun-inline first (xs) (f xs))
+ (defun-inline inc (a) (+ a 1))
+ (defun-inline listp (xs) (l xs))
+ (defun-inline rest (xs) (r xs))
+ (defun-inline second (xs) (f (r xs)))
+ (defun-inline third (xs) (f (r (r xs))))
+ (defun-inline qqu (xforms) (qq (unquote xforms)))
+
+ ;; macros
+ (defmacro and preds
+   (if preds
+     (qq
+      (if (unquote (first preds))
+        (unquote (cons and (rest preds)))
+        false))
+     true))
+
+ (defmacro or preds
+   (if preds
+     (qq
+      (if (unquote (first preds))
+        true
+        (unquote (cons or (rest preds)))))
+     false))
+
+ (defmacro cond bindings
+   (if bindings
+     (list
+      if (first bindings)
+      (first (rest bindings))
+      (cons cond (rest (rest bindings))))
+     ()))
+
+ (defmacro comment body
+   (qq ()))
+
+ (defmacro assert tests
+   (if tests
+     (qq (if (unquote (first tests))
+           (unquote (cons assert (rest tests)))
+           ()))
+     passed))
+
+ (defmacro test asserts
+   (qq (if (unquote (first (rest asserts)))
+         (concat (unquote (first asserts)) ": PASS")
+         (x (concat (unquote (first asserts)) ": FAIL")))))
+
+ )

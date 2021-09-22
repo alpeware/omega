@@ -1,0 +1,8 @@
+(
+
+ (defmacro throw args
+  (if args
+      (qq (list "exception" (unquote (first args))))
+    (qq (list "exception"))))
+
+)

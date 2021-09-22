@@ -1,0 +1,34 @@
+;;;; Piggybank
+
+;;; Piggybank smart coin library
+(
+ (defun-inline withdraw (cash-out-puzzle-hash new-amount my-puzzle-hash my-amount)
+   (list
+    (assert-amount my-amount)
+    (assert-puzzle-hash my-puzzle-hash)
+    (coin cash-out-puzzle-hash new-amount)
+    (coin my-puzzle-hash 0)
+    (announce-coin new-amount)))
+
+ (defun-inline deposit (new-amount my-puzzle-hash my-amount)
+   (list
+    (assert-amount my-amount)
+    (assert-puzzle-hash my-puzzle-hash)
+    (coin my-puzzle-hash new-amount)
+    (announce-coin new-amount)))
+
+ (defun-inline piggybank (target-amount
+                          cash-out-puzzle-hash
+                          my-puzzle-hash
+                          my-amount
+                          new-amount)
+   (cond
+     (not (> new-amount my-amount))
+     (throw)
+
+     (> new-amount target-amount)
+     (withdraw cash-out-puzzle-hash new-amount my-puzzle-hash my-amount)
+
+     else
+     (deposit new-amount my-puzzle-hash my-amount)))
+ )

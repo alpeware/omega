@@ -1,0 +1,15 @@
+;;;; Crypto
+
+(
+
+ (defun sha256tree* (xs)
+   (if (listp xs)
+     (sha256 2 (sha256tree* (first xs)) (sha256tree* (rest xs)))
+     (sha256 1 xs)))
+
+ (defmacro sha256tree (xs)
+   (if (listp xs)
+     (qq (sha256tree* (unquote xs)))
+     (qq (sha256 1 (unquote xs)))))
+
+ )

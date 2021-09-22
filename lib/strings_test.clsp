@@ -1,0 +1,29 @@
+(lambda ()
+
+  (include "core.clib")
+  (include "functional.clib")
+  (include "strings.clib")
+
+  (list
+   "strings tests"
+
+   (test "split fn"
+         (assert (equal (split "chia chialisp mojo" " ")
+                        (list "chia" "chialisp" "mojo"))
+                 (equal (split "chialisp" "")
+                        (list "c" "h" "i" "a" "l" "i" "s" "p"))))
+
+   (test "starts-with? fn"
+         (assert (starts-with? "chialisp" "chia")))
+
+   (test "blank? fn"
+         (assert (blank? "")
+                 (not (blank? "chia"))))
+
+   (test "upper-case fn"
+         (assert (equal (split (upper-case "chialisp") "")
+                        (split "CHIALISP" ""))))
+
+   (test "hex fn"
+         (assert (= (hex 0xff) "ff"))))
+  )

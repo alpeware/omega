@@ -1,0 +1,31 @@
+(mod ()
+     (include "omega-testing.clib")
+     (include "deposit.clib")
+
+     (defconstant PUBKEY 0xdeadbeef)
+     (defconstant COIN-ID 0xbabecafe)
+     (defconstant HASH 0xabcdef)
+     (defconstant NEW-AMOUNT 100)
+
+     (defun has-coin-announcement (x)
+       (equal (assert-coin-announcement HASH) x))
+
+     (defun has-signature (x)
+       (equal (sign-unsafe PUBKEY HASH) x))
+
+     (list
+      "deposit tests"
+
+      (test "hash value"
+            (assert (= (hash COIN-ID NEW-AMOUNT)
+                       (sha256 COIN-ID NEW-AMOUNT))))
+
+      (test "asserts coin announcement"
+            (assert
+             (some has-coin-announcement
+                   (conditions PUBKEY HASH))))
+
+      (test "asserts signature"
+            (assert
+             (some has-signature
+                   (conditions PUBKEY HASH))))))

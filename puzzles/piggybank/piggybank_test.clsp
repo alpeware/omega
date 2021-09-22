@@ -1,0 +1,52 @@
+;;;; Piggybank
+
+;;; Piggybank smart coin tests
+(mod ()
+     (include "omega-testing.clib")
+     (include "piggybank.clib")
+
+     (defconstant TARGET-AMOUNT 100)
+     (defconstant MY-AMOUNT 10)
+     (defconstant NEW-AMOUNT-ABOVE 110)
+     (defconstant NEW-AMOUNT-BELOW 90)
+
+     (defconstant CASH-OUT-PUZZLE-HASH 0xf00dcafe)
+     (defconstant MY-PUZZLE-HASH 0xdeadbeef)
+
+     (defun has-reset-piggybank-coin (x)
+       (equal (coin MY-PUZZLE-HASH 0) x))
+
+     (defun has-piggybank-cash-out-coin (x)
+       (equal (coin CASH-OUT-PUZZLE-HASH NEW-AMOUNT-ABOVE) x))
+
+     (defun has-new-piggybank-coin (x)
+       (equal (coin MY-PUZZLE-HASH NEW-AMOUNT-BELOW) x))
+
+     (list
+      "piggybank tests"
+
+      (test "throws when new amount too low"
+            (assert
+             (contains "exception" (piggybank _ _ _ 100 -100) )
+             (contains "exception" (piggybank _ _ _ 100 10))
+             (contains "exception" (piggybank _ _ _ 100 100))))
+
+      (test "deposit coin when below or at target"
+            (assert
+             (not
+              (some has-reset-piggybank-coin
+                    (piggybank TARGET-AMOUNT _
+                               MY-PUZZLE-HASH MY-AMOUNT NEW-AMOUNT-BELOW)))
+             (not
+              (some has-reset-piggybank-coin
+                    (piggybank TARGET-AMOUNT _
+                               MY-PUZZLE-HASH MY-AMOUNT TARGET-AMOUNT)))))
+
+      (test "withdraw when above target"
+            (assert
+             (some has-piggybank-cash-out-coin
+                   (piggybank TARGET-AMOUNT CASH-OUT-PUZZLE-HASH
+                              MY-PUZZLE-HASH MY-AMOUNT NEW-AMOUNT-ABOVE))
+             (some has-reset-piggybank-coin
+                   (piggybank TARGET-AMOUNT CASH-OUT-PUZZLE-HASH
+                              MY-PUZZLE-HASH MY-AMOUNT NEW-AMOUNT-ABOVE))))))
